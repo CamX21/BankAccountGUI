@@ -9,12 +9,20 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static System.Net.Mime.MediaTypeNames;
+using System.Data.SqlClient;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace WinFormsBankAccount
 {
     public partial class SecondFormBank : Form
 
     {
+
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-E6FQHK5\SQLEXPRESS; Database=BankAccount; Integrated Security=True;"); // use connection string to create a connection between project and database
+        SqlCommand cmd;
+        public string TextboxValue {  get; set; } // receive textbox value from form1
+
+
         double money = 0;
         double money2 = 0;
         public SecondFormBank()
@@ -92,7 +100,16 @@ namespace WinFormsBankAccount
                     label1.Visible = false;                               // add money to checkings account
                     numericUpDown1.Visible = false;        
                     button2.Visible = false;
-                    MessageBox.Show("Transaction Complete"); break;
+                    MessageBox.Show("Transaction Complete");
+
+                    con.Open(); // open connection to database
+                    cmd = new SqlCommand("update AccountInfo set CheckingsAccount='" + money + "'where AccountPassword='" + TextboxValue + "'", con);// pass the value of money to checkingsAccount in database
+                    cmd.ExecuteNonQuery();
+                    con.Close(); //close connection to database
+
+                    break;
+
+                   
 
                 case "2":
                     money2 += (double)numericUpDown1.Value;
@@ -100,7 +117,14 @@ namespace WinFormsBankAccount
                     label1.Visible = false;                                  // add money to savings account
                     numericUpDown1.Visible = false;
                     button2.Visible = false;
-                    MessageBox.Show("Transaction Complete"); break;
+                    MessageBox.Show("Transaction Complete");
+
+                    con.Open(); // open connection to database
+                    cmd = new SqlCommand("update AccountInfo set SavingsAccount='" + money2 + "'where AccountPassword='" + TextboxValue + "'", con); // pass the value of money2 to SavingsAccount in database
+                    cmd.ExecuteNonQuery();
+                    con.Close(); //close connection to database
+
+                    break;
 
                 case "3":
                     
@@ -116,6 +140,12 @@ namespace WinFormsBankAccount
                         numericUpDown1.Visible = false;      // withdraw money from checkings account
                         button2.Visible = false;
                         MessageBox.Show("Transaction Complete");
+
+                        con.Open(); // open connection to database
+                        cmd = new SqlCommand("update AccountInfo set CheckingsAccount='" + money + "'where AccountPassword='" + TextboxValue + "'", con);// pass the value of money to checkingsAccount in database
+                        cmd.ExecuteNonQuery();
+                        con.Close(); //close connection to database
+
                     } break;
                     
 
@@ -132,6 +162,12 @@ namespace WinFormsBankAccount
                         numericUpDown1.Visible = false;
                         button2.Visible = false;
                         MessageBox.Show("Transaction Complete");
+
+                        con.Open(); // open connection to database
+                        cmd = new SqlCommand("update AccountInfo set SavingsAccount='" + money2 + "'where AccountPassword='" + TextboxValue + "'", con);// pass the value of money2 to SavingsAccount in database
+                        cmd.ExecuteNonQuery();
+                        con.Close(); //close connection to database
+
                     } break;
                
                 case "5":
@@ -144,6 +180,16 @@ namespace WinFormsBankAccount
                         numericUpDown1.Visible = false;
                         button2.Visible = false;
                         MessageBox.Show("Transaction Complete");
+
+                        con.Open(); // open connection to database
+                        cmd = new SqlCommand("update AccountInfo set CheckingsAccount='" + money + "'where AccountPassword='" + TextboxValue + "'", con); // pass the value of money to checkingsAccount in database
+                        cmd.ExecuteNonQuery();
+                        con.Close(); //close connection to database
+
+                        con.Open(); // open connection to database
+                        cmd = new SqlCommand("update AccountInfo set SavingsAccount='" + money2 + "'where AccountPassword='" + TextboxValue + "'", con); // pass the value of money2 to SavingsAccount in database
+                        cmd.ExecuteNonQuery();
+                        con.Close(); //close connection to database
                     }
                     else
                     {
@@ -162,6 +208,16 @@ namespace WinFormsBankAccount
                         numericUpDown1.Visible = false;
                         button2.Visible = false;
                         MessageBox.Show("Transaction Complete");
+
+                        con.Open(); // open connection to database
+                        cmd = new SqlCommand("update AccountInfo set CheckingsAccount='" + money + "'where AccountPassword='" + TextboxValue + "'", con); // pass the value of money to checkingsAccount in database
+                        cmd.ExecuteNonQuery();
+                        con.Close(); //close connection to database
+
+                        con.Open(); // open connection to database
+                        cmd = new SqlCommand("update AccountInfo set SavingsAccount='" + money2 + "'where AccountPassword='" + TextboxValue + "'", con); // pass the value of money2 to SavingsAccount in database
+                        cmd.ExecuteNonQuery();
+                        con.Close(); //close connection to database
                     }
                     else {
                         MessageBox.Show("You dont have have that much money avaliable to transfer.");    // if users input is  greater than Savings account balance error message shows

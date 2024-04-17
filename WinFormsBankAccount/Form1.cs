@@ -1,10 +1,13 @@
 
 using BankAccountLibary;
-
+using System.Data.SqlClient;
 namespace WinFormsBankAccount
 {
     public partial class Form1 : Form
     {
+
+        SqlConnection con = new SqlConnection(@"Data Source=DESKTOP-E6FQHK5\SQLEXPRESS; Database=BankAccount; Integrated Security=True;"); // use connection string to create a connection between project and database
+        SqlCommand cmd; //create sql command
         public Form1()
         {
             InitializeComponent();
@@ -42,6 +45,13 @@ namespace WinFormsBankAccount
             {
                 SecondFormBank SecondForm = new SecondFormBank(); // if password does match second form uploads
                 SecondForm.Show();
+
+                con.Open(); //open connection to database
+                cmd = new SqlCommand("insert into AccountInfo(AccountPassword)values('" + textBox3.Text + "')",con); //pass textbox3 value into database in the AccountPassword column
+                cmd.ExecuteNonQuery();
+                con.Close(); //close connection to database
+
+                SecondForm.TextboxValue=textBox3.Text; //pass textbox value to secondform
             }
         }
     }
